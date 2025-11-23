@@ -1,0 +1,30 @@
+# Our security policy and information
+# This file complies with RFC 9116 - https://www.rfc-editor.org/rfc/rfc9116.html
+
+Contact: mailto:security@maa-framework.org
+Contact: https://gitlab.com/maa-framework/6-the-foundation/aletheia/-/issues/new?issue[confidential]=true
+Expires: 2026-11-22T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://gitlab.com/maa-framework/6-the-foundation/aletheia/-/blob/main/.well-known/security.txt
+
+# Security policy and vulnerability disclosure
+Policy: https://gitlab.com/maa-framework/6-the-foundation/aletheia/-/blob/main/SECURITY.md
+
+# Acknowledgments and hall of fame
+Acknowledgments: https://gitlab.com/maa-framework/6-the-foundation/aletheia/-/blob/main/SECURITY.md#-security-hall-of-fame
+
+# Encryption key for secure communication
+# Encryption: https://keys.openpgp.org/vks/v1/by-fingerprint/[FINGERPRINT]
+
+# Hiring (optional - uncomment if recruiting security researchers)
+# Hiring: https://maa-framework.org/careers
+
+# Security certification and audits
+# Certification: https://maa-framework.org/security/certifications
+
+# Additional information
+# - Zero dependencies = minimal supply chain attack surface
+# - No unsafe Rust code blocks
+# - Offline-first = cannot exfiltrate data
+# - ~300 lines of auditable code
+# - See SECURITY.md for full threat model

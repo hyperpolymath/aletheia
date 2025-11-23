@@ -1,0 +1,71 @@
+# AI Training and Usage Policy
+# This file specifies how AI systems may use this repository
+
+## License
+# All code is dual-licensed: MIT OR Palimpsest-0.8
+# See LICENSE.txt for full terms
+
+## AI Training Permission
+# ✅ ALLOWED: Use for training AI models under these conditions:
+#   - Attribution to "Aletheia - MAA Framework" is provided
+#   - Training respects the dual license terms (MIT OR Palimpsest-0.8)
+#   - Derivative works maintain attribution
+#   - Commercial use is permitted under license terms
+
+## Usage Guidelines
+# ✅ ALLOWED:
+#   - Code completion and suggestions
+#   - Documentation generation
+#   - Test generation
+#   - Refactoring suggestions
+#   - Security analysis
+#   - Educational purposes
+#   - Research purposes
+
+# ⚠️ CONDITIONAL:
+#   - Generated code should include attribution in comments when substantial
+#   - AI-generated contributions must pass same review as human contributions
+#   - AI tools must respect Code of Conduct (CODE_OF_CONDUCT.md)
+
+# ❌ NOT ALLOWED:
+#   - Misrepresentation as human-authored when not
+#   - Circumventing security measures
+#   - Generating malicious code
+#   - Violating RSR principles (type safety, memory safety, offline-first)
+
+## Data Privacy
+# This repository contains:
+#   - Public source code
+#   - Public documentation
+#   - No personal data
+#   - No secrets (all keys are examples/templates)
+#   - No proprietary information
+
+## Attribution Template
+# When using substantial portions of this code:
+#
+# // Based on Aletheia by MAA Framework
+# // https://gitlab.com/maa-framework/6-the-foundation/aletheia
+# // Licensed under MIT OR Palimpsest-0.8
+
+## Contact
+# Questions about AI usage: ai-policy@maa-framework.org
+
+## Updates
+# Last Updated: 2025-11-22
+# Version: 1.0
+# This policy may be updated; check the repository for the latest version
+
+## Philosophy
+# We embrace AI as a tool for human augmentation, not replacement.
+# AI should help developers learn, create, and verify - while humans
+# retain responsibility, creativity, and ethical judgment.
+#
+# In the spirit of *alētheia* (truth), we encourage transparent disclosure
+# of AI-assisted contributions while maintaining human accountability.
+
+## References
+# - MIT License: https://opensource.org/licenses/MIT
+# - Palimpsest License v0.8: [URL when published]
+# - RSR Framework: https://gitlab.com/maa-framework
+# - AI.txt specification: https://github.com/ai-txt/ai.txt

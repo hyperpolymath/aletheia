@@ -1,0 +1,49 @@
+# Rust build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# Cargo lock file (we KEEP this for reproducible builds)
+# Cargo.lock
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Cargo cache
+.cargo/
+
+# Test coverage reports
+coverage/
+*.profraw
+*.profdata
+
+# Documentation build
+/target/doc/
+
+# Nix build results
+result
+result-*
+
+# CI/CD artifacts
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.backup
+
+# Just build artifacts
+.just/

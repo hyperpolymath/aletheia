@@ -1,0 +1,49 @@
+# Dual License
+
+Aletheia is dual-licensed under your choice of:
+
+- **MIT License** (see LICENSE-MIT.txt)
+- **Palimpsest License v0.8** (see LICENSE-PALIMPSEST.txt)
+
+You may use Aletheia under the terms of either license.
+
+## Why Dual License?
+
+This dual-licensing approach allows:
+
+1. **Maximum Compatibility**: MIT license ensures compatibility with most open source projects
+2. **Philosophical Alignment**: Palimpsest license embodies principles of reversibility and iteration
+3. **User Choice**: You choose the license that best fits your needs
+
+## Choosing a License
+
+### Use MIT License if you:
+- Need compatibility with MIT/Apache/BSD ecosystems
+- Want simple, permissive terms
+- Don't need reversibility guarantees
+
+### Use Palimpsest License if you:
+- Value the philosophy of reversibility and iteration
+- Want to align with the MAA Framework principles
+- Appreciate the explicit acknowledgment of impermanence
+
+## License Texts
+
+See the following files for full license texts:
+
+- [LICENSE-MIT.txt](LICENSE-MIT.txt) - MIT License
+- [LICENSE-PALIMPSEST.txt](LICENSE-PALIMPSEST.txt) - Palimpsest License v0.8
+
+## Copyright
+
+Copyright (c) 2025 MAA Framework Contributors
+
+## Attribution
+
+When using Aletheia, attribution is appreciated but not required under either license:
+
+```
+Based on Aletheia by MAA Framework
+https://gitlab.com/maa-framework/6-the-foundation/aletheia
+Licensed under MIT OR Palimpsest-0.8
+```

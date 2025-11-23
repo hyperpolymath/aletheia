@@ -1,0 +1,102 @@
+/* TEAM */
+
+Project: Aletheia
+Purpose: RSR Compliance Verification Tool
+Philosophy: Pursuit of alētheia (truth) through rigorous standards
+
+Maintainers: MAA Framework Team
+Contact: maintainers [at] maa-framework.org
+Location: Distributed Globally
+
+/* THANKS */
+
+Rust Community: For an incredible language and ecosystem
+RFC 9116 Authors: For standardizing security.txt
+Contributor Covenant: For Code of Conduct inspiration
+Keep a Changelog: For changelog format guidance
+Semantic Versioning: For version numbering clarity
+
+/* SITE */
+
+Repository: https://gitlab.com/maa-framework/6-the-foundation/aletheia
+License: MIT OR Palimpsest-0.8
+Language: Rust
+Standards: RSR Bronze-level compliant
+Last Updated: 2025-11-22
+
+/* TECHNOLOGY */
+
+Language: Rust 2021 Edition
+Min Rust Version: 1.75
+Dependencies: ZERO (standard library only)
+Build System: Cargo + Just + Nix
+CI/CD: GitLab CI
+Testing: Cargo test (built-in)
+Linting: Clippy
+Formatting: rustfmt
+
+/* ARCHITECTURE */
+
+Lines of Code: ~300 (single-file)
+Unsafe Blocks: 0 (100% safe Rust)
+Test Coverage: 100%
+Network Calls: 0 (offline-first)
+Type Safety: 100% (Rust guarantees)
+Memory Safety: 100% (ownership model)
+
+/* PRINCIPLES */
+
+1. Simplicity: Single-file, easy to audit
+2. Zero Trust: No dependencies, no network
+3. Type Safety: Leverage Rust's type system
+4. Offline-First: Works air-gapped
+5. Self-Verifying: Aletheia verifies itself
+
+/* COMPLIANCE */
+
+RSR Level: Bronze
+TPCF Perimeter: 3 (Community Sandbox)
+Security: RFC 9116 security.txt
+Accessibility: WCAG 2.1 AA (documentation)
+Licenses: MIT + Palimpsest v0.8
+
+/* PHILOSOPHY */
+
+"Aletheia" (ἀλήθεια) - Ancient Greek
+Meaning: Truth, disclosure, unconcealment
+
+Not merely factual correctness, but the revealing or
+unconcealing of reality. In software, this means:
+
+- Transparent processes
+- Verifiable standards
+- Honest documentation
+- Clear communication
+- Rigorous verification
+
+"The truth is not always beautiful,
+ nor beautiful words the truth." - Lao Tzu
+
+/* CONTRIBUTING */
+
+We welcome contributions!
+See: CONTRIBUTING.md
+Code of Conduct: CODE_OF_CONDUCT.md
+Issues: https://gitlab.com/maa-framework/6-the-foundation/aletheia/-/issues
+Merge Requests: https://gitlab.com/maa-framework/6-the-foundation/aletheia/-/merge_requests
+
+/* HUMANS.TXT */
+
+Standard: http://humanstxt.org/
+Encoding: UTF-8
+Format: Team, Thanks, Site, Technology
+Purpose: Attribution and transparency
+
+                   _   _          _
+     /\   | |     | | | |        (_)
+    /  \  | | ___ | |_| |__   ___ _  __ _
+   / /\ \ | |/ _ \| __| '_ \ / _ \ |/ _` |
+  / ____ \| |  __/| |_| | | |  __/ | (_| |
+ /_/    \_\_|\___| \__|_| |_|\___|_|\__,_|
+
+ Truth through verification

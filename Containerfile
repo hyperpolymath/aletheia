@@ -1,4 +1,4 @@
-# Multi-stage Dockerfile for Aletheia
+# Multi-stage Containerfile for Aletheia
 # Produces a minimal, secure container image
 
 # Stage 1: Build

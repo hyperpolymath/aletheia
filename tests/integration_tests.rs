@@ -46,7 +46,11 @@ fn test_fully_compliant_repository() {
     create_file(&repo, "CHANGELOG.md", "# Changelog");
 
     // Create .well-known directory
-    create_file(&repo, ".well-known/security.txt", "Contact: security@example.org");
+    create_file(
+        &repo,
+        ".well-known/security.txt",
+        "Contact: security@example.org",
+    );
     create_file(&repo, ".well-known/ai.txt", "# AI Policy");
     create_file(&repo, ".well-known/humans.txt", "# Humans");
 
@@ -66,14 +70,20 @@ fn test_fully_compliant_repository() {
         .expect("Failed to run aletheia");
 
     // Should exit with success
-    assert!(output.status.success(),
-        "Fully compliant repository should pass verification");
+    assert!(
+        output.status.success(),
+        "Fully compliant repository should pass verification"
+    );
 
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("16/16 checks passed"),
-        "Should pass all checks");
-    assert!(stdout.contains("Bronze-level RSR compliance: ACHIEVED"),
-        "Should achieve Bronze compliance");
+    assert!(
+        stdout.contains("16/16 checks passed"),
+        "Should pass all checks"
+    );
+    assert!(
+        stdout.contains("Bronze-level RSR compliance: ACHIEVED"),
+        "Should achieve Bronze compliance"
+    );
 
     // Clean up
     fs::remove_dir_all(repo).ok();
@@ -96,12 +106,16 @@ fn test_partially_compliant_repository() {
         .expect("Failed to run aletheia");
 
     // Should exit with failure
-    assert!(!output.status.success(),
-        "Partially compliant repository should fail verification");
+    assert!(
+        !output.status.success(),
+        "Partially compliant repository should fail verification"
+    );
 
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("Bronze-level RSR compliance: NOT MET"),
-        "Should not achieve Bronze compliance");
+    assert!(
+        stdout.contains("Bronze-level RSR compliance: NOT MET"),
+        "Should not achieve Bronze compliance"
+    );
 
     // Clean up
     fs::remove_dir_all(repo).ok();
@@ -119,13 +133,17 @@ fn test_empty_repository() {
         .expect("Failed to run aletheia");
 
     // Should exit with failure
-    assert!(!output.status.success(),
-        "Empty repository should fail verification");
+    assert!(
+        !output.status.success(),
+        "Empty repository should fail verification"
+    );
 
     let stdout = String::from_utf8_lossy(&output.stdout);
     // Empty repo should fail Bronze compliance
-    assert!(stdout.contains("Bronze-level RSR compliance: NOT MET"),
-        "Should not meet Bronze compliance");
+    assert!(
+        stdout.contains("Bronze-level RSR compliance: NOT MET"),
+        "Should not meet Bronze compliance"
+    );
 
     // Clean up
     fs::remove_dir_all(repo).ok();
@@ -143,8 +161,10 @@ fn test_nonexistent_path() {
     assert!(!output.status.success());
 
     let stderr = String::from_utf8_lossy(&output.stderr);
-    assert!(stderr.contains("does not exist") || stderr.contains("Error"),
-        "Should report path error");
+    assert!(
+        stderr.contains("does not exist") || stderr.contains("Error"),
+        "Should report path error"
+    );
 }
 
 /// Test self-verification (Aletheia verifying itself)
@@ -156,14 +176,20 @@ fn test_self_verification() {
         .expect("Failed to run aletheia self-verification");
 
     // Aletheia should verify itself successfully
-    assert!(output.status.success(),
-        "Aletheia should verify itself successfully");
+    assert!(
+        output.status.success(),
+        "Aletheia should verify itself successfully"
+    );
 
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("16/16 checks passed"),
-        "Aletheia should pass all self-checks");
-    assert!(stdout.contains("Bronze-level RSR compliance: ACHIEVED"),
-        "Aletheia should achieve Bronze compliance");
+    assert!(
+        stdout.contains("16/16 checks passed"),
+        "Aletheia should pass all self-checks"
+    );
+    assert!(
+        stdout.contains("Bronze-level RSR compliance: ACHIEVED"),
+        "Aletheia should achieve Bronze compliance"
+    );
 }
 
 /// Test output format consistency
@@ -177,22 +203,35 @@ fn test_output_format() {
     let stdout = String::from_utf8_lossy(&output.stdout);
 
     // Check for expected output sections
-    assert!(stdout.contains("Aletheia - RSR Compliance Verification Report"),
-        "Should have report header");
-    assert!(stdout.contains("Repository:"),
-        "Should show repository path");
-    assert!(stdout.contains("Documentation"),
-        "Should have Documentation section");
-    assert!(stdout.contains("Well-Known"),
-        "Should have Well-Known section");
-    assert!(stdout.contains("Build System"),
-        "Should have Build System section");
-    assert!(stdout.contains("Source Structure"),
-        "Should have Source Structure section");
-    assert!(stdout.contains("Score:"),
-        "Should show score");
-    assert!(stdout.contains("Bronze-level RSR compliance:"),
-        "Should show compliance status");
+    assert!(
+        stdout.contains("Aletheia - RSR Compliance Verification Report"),
+        "Should have report header"
+    );
+    assert!(
+        stdout.contains("Repository:"),
+        "Should show repository path"
+    );
+    assert!(
+        stdout.contains("Documentation"),
+        "Should have Documentation section"
+    );
+    assert!(
+        stdout.contains("Well-Known"),
+        "Should have Well-Known section"
+    );
+    assert!(
+        stdout.contains("Build System"),
+        "Should have Build System section"
+    );
+    assert!(
+        stdout.contains("Source Structure"),
+        "Should have Source Structure section"
+    );
+    assert!(stdout.contains("Score:"), "Should show score");
+    assert!(
+        stdout.contains("Bronze-level RSR compliance:"),
+        "Should show compliance status"
+    );
 }
 
 /// Test that tests directory can be named 'test' or 'tests'
@@ -209,8 +248,10 @@ fn test_alternate_test_directory_names() {
         .expect("Failed to run aletheia");
 
     let stdout1 = String::from_utf8_lossy(&output1.stdout);
-    assert!(stdout1.contains("✅ tests/ directory"),
-        "Should accept 'tests' directory");
+    assert!(
+        stdout1.contains("✅ tests/ directory"),
+        "Should accept 'tests' directory"
+    );
 
     // Test with 'test' directory
     let repo2 = create_test_repo("with_test");
@@ -223,8 +264,10 @@ fn test_alternate_test_directory_names() {
         .expect("Failed to run aletheia");
 
     let stdout2 = String::from_utf8_lossy(&output2.stdout);
-    assert!(stdout2.contains("✅ tests/ directory"),
-        "Should accept 'test' directory");
+    assert!(
+        stdout2.contains("✅ tests/ directory"),
+        "Should accept 'test' directory"
+    );
 
     // Clean up
     fs::remove_dir_all(repo1).ok();

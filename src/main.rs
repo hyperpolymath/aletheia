@@ -84,8 +84,17 @@ fn dir_exists(base: &Path, dirname: &str) -> bool {
 
 /// Verify documentation files exist
 fn check_documentation(report: &mut ComplianceReport, repo_path: &Path) {
-    let required_docs = vec![
+    // README can be either .md or .adoc (AsciiDoc is acceptable alternative)
+    let readme_exists =
+        file_exists(repo_path, "README.md") || file_exists(repo_path, "README.adoc");
+    report.add_check(
+        "Documentation",
         "README.md",
+        readme_exists,
+        ComplianceLevel::Bronze,
+    );
+
+    let other_required_docs = vec![
         "LICENSE.txt",
         "SECURITY.md",
         "CONTRIBUTING.md",
@@ -94,7 +103,7 @@ fn check_documentation(report: &mut ComplianceReport, repo_path: &Path) {
         "CHANGELOG.md",
     ];
 
-    for doc in required_docs {
+    for doc in other_required_docs {
         let exists = file_exists(repo_path, doc);
         report.add_check("Documentation", doc, exists, ComplianceLevel::Bronze);
     }
@@ -103,21 +112,21 @@ fn check_documentation(report: &mut ComplianceReport, repo_path: &Path) {
 /// Verify .well-known directory and required files
 fn check_well_known(report: &mut ComplianceReport, repo_path: &Path) {
     let well_known_path = repo_path.join(".well-known");
-    let dir_exists = well_known_path.is_dir();
+    let has_dir = well_known_path.is_dir();
 
     report.add_check(
         "Well-Known",
         ".well-known/ directory",
-        dir_exists,
+        has_dir,
         ComplianceLevel::Bronze,
     );
 
-    if dir_exists {
-        let required_files = vec!["security.txt", "ai.txt", "humans.txt"];
-        for file in required_files {
-            let exists = well_known_path.join(file).is_file();
-            report.add_check("Well-Known", file, exists, ComplianceLevel::Bronze);
-        }
+    // Always emit file checks for consistent check count (16 total)
+    // Files can only pass if directory exists
+    let required_files = vec!["security.txt", "ai.txt", "humans.txt"];
+    for file in required_files {
+        let exists = has_dir && well_known_path.join(file).is_file();
+        report.add_check("Well-Known", file, exists, ComplianceLevel::Bronze);
     }
 }
 

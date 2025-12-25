@@ -14,23 +14,23 @@ Aletheia follows a **benevolent dictator governance model with maintainer delega
 
 ### Project Lead
 
-**[To Be Updated]**
+**hyperpolymath**
 - **Role**: Project vision, final decision authority
-- **GitLab**: @username
-- **Email**: lead@maa-framework.org
-- **Timezone**: UTC
-- **Focus Areas**: Architecture, RSR compliance, community
+- **GitLab**: @hyperpolymath
+- **Email**: hyperpolymath@maa-framework.org
+- **Timezone**: Global
+- **Focus Areas**: Architecture, RSR compliance, community, Hyperpolymath Standard
 
 ### Core Maintainers
 
-**[To Be Updated]**
+**MAA Framework Contributors**
 - **Role**: Code review, merge authority
-- **GitLab**: @username
-- **Email**: maintainer@maa-framework.org
-- **Timezone**: UTC
-- **Focus Areas**: Rust implementation, testing
+- **GitLab**: @maa-framework
+- **Email**: maintainers@maa-framework.org
+- **Timezone**: Global
+- **Focus Areas**: Rust implementation, testing, documentation
 
-*More maintainers will be added as the project grows.*
+*Contributors are welcome! See CONTRIBUTING.md for how to get involved.*
 
 ## 🎯 Maintainer Responsibilities
 

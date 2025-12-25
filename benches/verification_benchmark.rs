@@ -6,8 +6,8 @@
 //! For more sophisticated benchmarking, consider using criterion.rs
 //! (but that would add a dependency, breaking RSR Bronze compliance).
 
-use std::time::Instant;
 use std::path::PathBuf;
+use std::time::Instant;
 
 /// Benchmark a function and return elapsed time in microseconds
 fn benchmark<F: FnOnce()>(name: &str, f: F) -> u128 {
@@ -54,9 +54,7 @@ fn main() {
     let total_time = benchmark("Complete verification (x10)", || {
         use std::process::Command;
         for _ in 0..10 {
-            let _ = Command::new("cargo")
-                .args(&["run", "--release"])
-                .output();
+            let _ = Command::new("cargo").args(&["run", "--release"]).output();
         }
     });
 

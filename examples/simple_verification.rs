@@ -4,8 +4,6 @@
 //! Note: Aletheia is currently a binary-only tool, but this demonstrates
 //! the API design if library usage is added in the future.
 
-use std::path::PathBuf;
-
 fn main() {
     println!("Aletheia RSR Compliance Verification Example");
     println!("============================================\n");
@@ -22,7 +20,8 @@ fn main() {
 
     // Example 3: Expected output
     println!("Example 3: Expected output format");
-    println!("
+    println!(
+        "
 🔍 Aletheia - RSR Compliance Verification Report
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Repository: /path/to/repository
@@ -36,7 +35,8 @@ Repository: /path/to/repository
 
 Score: 14/16 checks passed (87.5%)
 ⚠️  Bronze-level RSR compliance: NOT MET
-    ");
+    "
+    );
 
     println!("\nNote: To use Aletheia, run the binary:");
     println!("  cargo run                    # Verify current directory");

@@ -341,6 +341,31 @@ These should be transferred to their proper repositories.
 | Go | Rust |
 | Python (general) | ReScript/Rust |
 
+## Value Chain Policy
+
+All Hyperpolymath projects follow a standardized value chain model based on Porter's Value Chain framework. See **[VALUE-CHAIN-POLICY.md](docs/VALUE-CHAIN-POLICY.md)** for the complete specification.
+
+### Quick Reference
+
+```
+Support Activities (Cross-cutting):
+├── Technology      → CCCP stack (Cerro Torre, Svalinn, Valence Shell)
+├── Formalizations  → Absolute Zero, Echidna, formal proofs
+├── Standards       → RSR, CCCP, .scm files, Palimpsest
+└── Infrastructure  → mustfile, rhodium-pipeline, CI/CD
+
+Primary Activities (Value Flow):
+INBOUND → OPERATIONS → OUTBOUND → MARKETING → SERVICE
+(theory)   (core work)  (outputs)   (RSR/maint)  (automation)
+```
+
+Each project must identify:
+1. **Foundational Input** - What theoretical/practical inputs does it receive?
+2. **Core Operations** - What does this project actually build?
+3. **Outbound Targets** - Where do outputs go?
+4. **Maintenance Strategy** - Corrective/Adaptive/Perfective
+5. **Service Automation** - feedback-o-tron, cicd-hyper-a, etc.
+
 ## Next Steps for Cross-Repo Work
 
 1. **Transfer extractions**: Move rhodibot and rhodium-pipeline to proper repos

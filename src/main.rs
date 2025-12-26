@@ -630,7 +630,7 @@ fn json_escape(s: &str) -> String {
     }
     result
 }
-
+Aletheia is a zero-dependency Rust tool for verifying [Rhodium Standard Repository (RSR)](https://gitlab.com/maa-framework) compliance. It helps maintainers ensure their repositories meet the rigorous standards for security, documentation, and operational excellence.
 /// Print report as JSON
 fn print_json_report(report: &ComplianceReport) {
     let timestamp = format_timestamp(report.verified_at);

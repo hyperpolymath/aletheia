@@ -1,121 +1,285 @@
 = Aletheia
+Jonathan D. A. Jewell <jonathan@metadatastician.art>
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
 
 image::https://img.shields.io/badge/RSR-Bronze-cd7f32[Rhodium Standard Bronze,link=https://github.com/hyperpolymath/rhodium-standard-repositories]
 
-> *Ἀλήθεια* (alētheia) - Greek: "truth", "disclosure", "unconcealment"
+[quote, Heidegger on Aletheia]
+____
+*Ἀλήθεια* (alētheia) - Greek: "truth", "disclosure", "unconcealment"
 
-*Aletheia* is a zero-dependency repository health checker that verifies your project has essential documentation, security disclosure, and build configuration in place.
+The unconcealment of what was previously hidden; the bringing-forth of truth from concealment.
+____
 
-== What It Checks
+== What is Aletheia?
 
-Aletheia scans your repository for:
+*Aletheia* is a research project exploring *reversible system operations* - the precursor work required before undertaking a full rewrite of Minix into a modern, reversible operating system (*r-Minix*).
 
-*Documentation*::
-README, LICENSE, SECURITY.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, MAINTAINERS.md, CHANGELOG.md
+=== The Central Question
 
-*Security Disclosure*::
-`.well-known/security.txt` (RFC 9116), `.well-known/ai.txt`, `.well-known/humans.txt`
+[quote]
+____
+Can every system operation be undone? Can we prove that `operation ;; reverse(operation) ≡ nothing`?
+____
 
-*Build System*::
-justfile, flake.nix, CI/CD configuration (.gitlab-ci.yml)
+This is not just about "undo" functionality. It's about *formal guarantees* that:
 
-*Project Structure*::
-`src/` directory, `tests/` directory
+* Every operation has a well-defined inverse
+* The composition of an operation with its inverse is provably a null operation (CNO)
+* System state can always be recovered
+* No information is irreversibly destroyed
+
+=== Connection to Absolute Zero
+
+Aletheia builds on the theoretical foundations established in link:https://github.com/hyperpolymath/absolute-zero[Absolute Zero], which formally proves properties of *Certified Null Operations (CNOs)*:
+
+[source]
+----
+∀ σ : State, ∀ op : Operation,
+  IsReversible(op) ↔ (
+    ∃ op_inv : Operation,
+      (op ;; op_inv) ≡ CNO ∧
+      (op_inv ;; op) ≡ CNO
+  )
+----
+
+Where Absolute Zero proves that certain operations do *nothing*, Aletheia explores operations that *do something but can be undone*.
+
+== Ecosystem Architecture
+
+[source]
+----
+┌─────────────────────────────────────────────────────────────────────┐
+│                        ABSOLUTE ZERO                                │
+│            Formal proofs: op ;; reverse(op) ≡ CNO                   │
+│                                                                     │
+│  Coq │ Lean 4 │ Z3 │ Agda │ Isabelle                               │
+│  Phase 1: 100% │ Phase 2-4: 70%                                     │
+└─────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ proves
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                     PRACTICAL IMPLEMENTATIONS                       │
+│                                                                     │
+│   ┌───────────────────┐       ┌───────────────────────────┐        │
+│   │   VALENCE SHELL   │       │        ALETHEIA           │        │
+│   │                   │       │       (this project)      │        │
+│   │  Reversible       │       │                           │        │
+│   │  Filesystem       │       │  Reversible System Ops    │        │
+│   │                   │       │  Precursor to r-Minix     │        │
+│   │  • mkdir/rmdir    │       │                           │        │
+│   │  • create/unlink  │       │  • Process operations     │        │
+│   │  • read/write     │       │  • IPC mechanisms         │        │
+│   │                   │       │  • Memory management      │        │
+│   └───────────────────┘       │  • Signal handling        │        │
+│                               └───────────────────────────┘        │
+└─────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ enables
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                          r-MINIX (FUTURE)                           │
+│                                                                     │
+│   Full reversible Minix rewrite in modern stack                     │
+│   Rust │ ReScript │ Formally verified │ All syscalls reversible    │
+└─────────────────────────────────────────────────────────────────────┘
+----
+
+== Research Areas
+
+=== 1. Process Reversibility
+
+Can process creation and termination be made reversible?
+
+[source]
+----
+fork() ;; wait()  ≡  CNO  ?
+exec() ;; exit()  ≡  CNO  ?
+----
+
+*Challenges*:
+
+* Process state capture and restoration
+* Resource cleanup verification
+* Signal handling during reversal
+
+=== 2. IPC Reversibility
+
+Can inter-process communication be undone?
+
+[source]
+----
+send(msg) ;; receive()  ≡  CNO  ?
+signal(SIGTERM) ;; ???  ≡  CNO  ?
+----
+
+*Challenges*:
+
+* Message ordering and causality
+* Buffered vs unbuffered channels
+* Broadcast/multicast reversal
+
+=== 3. Memory Reversibility
+
+Can memory operations be made reversible?
+
+[source]
+----
+mmap() ;; munmap()  ≡  CNO  ?
+brk(+n) ;; brk(-n)  ≡  CNO  ?
+----
+
+*Challenges*:
+
+* Copy-on-write semantics
+* Shared memory across processes
+* Memory-mapped I/O
+
+=== 4. System Call Abstraction
+
+Defining a reversible system call interface:
+
+[source,rust]
+----
+trait ReversibleSyscall {
+    type State;
+    type Inverse: ReversibleSyscall;
+
+    fn execute(&self, state: &mut State) -> Result<(), Error>;
+    fn inverse(&self) -> Self::Inverse;
+
+    // Proof obligation: execute ;; inverse.execute ≡ identity
+    fn proof_reversible(&self) -> Proof;
+}
+----
+
+== Design Principles
+
+1. *Formal First* - Every operation must have a formal reversibility proof
+2. *Absolute Zero Compatible* - Uses CNO definitions from Absolute Zero
+3. *Minix Inspired* - Microkernel architecture, minimal trusted base
+4. *Modern Stack* - Rust, ReScript, Deno (per Hyperpolymath standards)
+5. *Zero Unsafe* - Except where absolutely required for syscalls
+
+== Project Status
+
+[cols="1,2,1"]
+|===
+|Phase |Description |Status
+
+|0. Research
+|Literature review, Minix analysis, reversibility theory
+|🔄 In Progress
+
+|1. Foundations
+|Core reversibility types and proofs
+|📋 Planned
+
+|2. Filesystem
+|Integration with Valence Shell
+|📋 Planned
+
+|3. Process
+|Reversible process management
+|📋 Planned
+
+|4. IPC
+|Reversible inter-process communication
+|📋 Planned
+
+|5. Integration
+|Full system integration, r-Minix prototype
+|📋 Future
+|===
+
+== Related Projects
+
+[cols="1,2,1"]
+|===
+|Project |Purpose |Link
+
+|*absolute-zero*
+|Formal CNO verification (Coq/Lean/Z3)
+|link:https://github.com/hyperpolymath/absolute-zero[GitHub]
+
+|*valence-shell*
+|Reversible filesystem operations
+|TBD
+
+|*r-Minix*
+|Full reversible Minix (future goal)
+|TBD
+|===
 
 == Quick Start
 
 [source,bash]
 ----
-# Build
-cargo build --release
+# Clone
+git clone https://github.com/hyperpolymath/aletheia.git
+cd aletheia
 
-# Check current directory
-cargo run
+# Build (Rust)
+cargo build
 
-# Check a specific repository
-cargo run -- /path/to/repository
+# Run tests
+cargo test
 
-# JSON output for CI/CD pipelines
-cargo run -- --format json
-
-# Quiet mode (just PASS/FAIL)
-cargo run -- --quiet
+# Explore proofs (requires Coq)
+cd proofs && coqc Reversibility.v
 ----
-
-== CLI Usage
-
-[source]
-----
-aletheia [OPTIONS] [PATH]
-
-OPTIONS:
-    -h, --help           Print help information
-    -V, --version        Print version information
-    -q, --quiet          Quiet mode (only outputs PASS or FAIL)
-    -v, --verbose        Verbose mode (detailed output)
-    --format <FORMAT>    Output format: human (default), json
-
-EXIT CODES:
-    0    All checks passed
-    1    Compliance checks failed
-    2    Security warning (critical)
-    3    Invalid path provided
-    4    Invalid arguments
-----
-
-== Example Output
-
-[source]
-----
-Aletheia - Repository Health Check
-Verified: 2025-12-26T08:00:00Z
-Repository: /path/to/project
-
-Documentation
-  ✅ README.md [Bronze]
-  ✅ LICENSE.txt [Bronze]
-  ✅ SECURITY.md [Bronze]
-  ...
-
-Score: 16/16 checks passed (100.0%)
-🏆 Bronze-level compliance: ACHIEVED
-----
-
-== Design Principles
-
-1. *Zero Dependencies* - Only uses Rust standard library (no supply chain risk)
-2. *Zero Unsafe Code* - 100% safe Rust
-3. *Offline-First* - No network access, works air-gapped
-4. *Single Binary* - Easy to distribute and audit (~810 lines)
-5. *Self-Verifying* - Aletheia passes its own checks
-
-== Security
-
-- *No unsafe code* - Zero `unsafe` blocks
-- *No dependencies* - Eliminates supply chain attack surface
-- *No network access* - Cannot exfiltrate data
-- *Symlink detection* - Prevents directory traversal attacks
-- *Security audit*: 2025-12-26, zero vulnerabilities found
-
-See link:SECURITY.md[SECURITY.md] for vulnerability disclosure.
 
 == Contributing
 
-- link:CONTRIBUTING.md[CONTRIBUTING.md] - How to contribute
-- link:CODE_OF_CONDUCT.md[CODE_OF_CONDUCT.md] - Community standards
-- link:MAINTAINERS.md[MAINTAINERS.md] - Project maintainers
+This is research-stage software. Contributions welcome in:
+
+* Formal proofs of reversibility properties
+* Minix syscall analysis
+* Reversibility literature survey
+* Rust/ReScript implementation
+
+See link:CONTRIBUTING.md[CONTRIBUTING.md] for guidelines.
 
 == License
 
 Dual-licensed under MIT and Palimpsest v0.8. See link:LICENSE.txt[LICENSE.txt].
 
-== Links
+== References
 
-- https://gitlab.com/maa-framework/6-the-foundation/aletheia[Repository]
-- link:ROADMAP.md[Roadmap]
-- link:CHANGELOG.md[Changelog]
-- link:RSR-CONFORMITY.md[RSR Conformity Statement]
+=== Theoretical Foundations
+
+* Landauer, R. (1961). "Irreversibility and Heat Generation in Computing"
+* Bennett, C. (1973). "Logical Reversibility of Computation"
+* Absolute Zero project - Formal CNO verification
+
+=== Operating Systems
+
+* Tanenbaum, A. - MINIX design and implementation
+* seL4 - Formally verified microkernel
+* Redox OS - Rust-based microkernel
+
+=== Reversible Computing
+
+* Thomsen, M. K. - Reversible computing languages
+* Yokoyama, T. - Janus reversible programming language
+
+== Contact
+
+*Jonathan D. A. Jewell*
+
+* GitLab: link:https://gitlab.com/hyperpolymath[@hyperpolymath]
+* GitHub: link:https://github.com/Hyperpolymath[@Hyperpolymath]
+* Email: jonathan@metadatastician.art
 
 ---
 
-_"The truth is not always beautiful, nor beautiful words the truth." - Lao Tzu_
+[quote, Parmenides]
+____
+"For it is the same thing to think and to be."
+____
+
+_What can be computed can be unconcealed. What is unconcealed reveals its reversibility._

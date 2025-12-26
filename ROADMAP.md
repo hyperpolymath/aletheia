@@ -12,7 +12,7 @@ This document outlines the complete development roadmap for Aletheia, from the c
 
 ---
 
-## Current State: v0.1.0 (MVP)
+## Current State: v0.1.x (MVP+)
 
 ### Status: Production Ready
 
@@ -21,17 +21,26 @@ This document outlines the complete development roadmap for Aletheia, from the c
 | Self-Verification | 16/16 checks (100%) |
 | Dependencies | 0 (zero) |
 | Unsafe Blocks | 0 (zero) |
-| Lines of Code | ~240 |
-| Unit Tests | 5 |
-| Integration Tests | 7 |
+| Lines of Code | ~810 |
+| Unit Tests | 10 |
+| Integration Tests | 18 |
+| Security Audit | 2025-12-26 (0 vulnerabilities) |
 
 ### Completed Features
 - Bronze-level RSR verification
-- CLI interface with exit codes
+- CLI interface with distinct exit codes (0-4)
 - Human-readable reports
+- JSON output format (`--format json`)
+- Quiet mode (`-q` / `--quiet`)
+- Verbose mode (`-v` / `--verbose`)
+- Help text (`--help`) and version (`--version`)
 - Self-verification capability
 - RFC 9116 security.txt compliance
 - Nix flake for reproducible builds
+- GitHub Actions workflow template
+- Performance benchmarks
+- Symlink detection and security warnings
+- Verification timestamps (TOCTOU mitigation)
 - Comprehensive documentation
 
 ---
@@ -39,11 +48,11 @@ This document outlines the complete development roadmap for Aletheia, from the c
 ## Short-Term: v0.2.0 - v0.9.0
 
 ### v0.2.0: Output Formats
-- [ ] JSON output format (`--format json`)
+- [x] JSON output format (`--format json`) ✅ Completed
 - [ ] SARIF output for CI/CD integration
-- [ ] Machine-readable exit codes (per-category)
-- [ ] Quiet mode (`--quiet`)
-- [ ] Verbose mode (`--verbose`)
+- [x] Machine-readable exit codes (0-4) ✅ Completed
+- [x] Quiet mode (`--quiet`) ✅ Completed
+- [x] Verbose mode (`--verbose`) ✅ Completed
 
 ### v0.3.0: Configuration
 - [ ] `.aletheia.toml` configuration file
@@ -101,9 +110,9 @@ This document outlines the complete development roadmap for Aletheia, from the c
 ### v1.0.0: Stable Release
 - [ ] Semantic versioning commitment
 - [ ] API stability guarantee
-- [ ] Comprehensive documentation
-- [ ] Performance benchmarks
-- [ ] Security audit completed
+- [x] Comprehensive documentation ✅ Completed
+- [x] Performance benchmarks ✅ Completed
+- [x] Security audit completed ✅ Completed (2025-12-26)
 - [ ] crates.io publication
 
 ### v2.0.0: Platinum-Level RSR
@@ -212,19 +221,19 @@ These constraints apply to ALL versions:
 1. Add more unit tests for edge cases
 2. Improve error messages
 3. Add example repositories
-4. Documentation improvements
+4. SARIF output format
 
 ### Intermediate
-1. JSON output format implementation
-2. Configuration file support
-3. Language-specific checks
-4. HTML report generation
+1. Configuration file support (`.aletheia.toml`)
+2. Language-specific checks
+3. HTML report generation
+4. Custom check definitions
 
 ### Advanced
 1. Plugin architecture design
 2. Formal verification integration
-3. Security audit
-4. Performance optimization
+3. Silver-level RSR implementation
+4. Batch repository analysis
 
 ---
 
@@ -259,7 +268,7 @@ These constraints apply to ALL versions:
 
 ---
 
-**Version**: 1.0
-**Last Updated**: 2025-12-25
+**Version**: 1.1
+**Last Updated**: 2025-12-26
 
 *"Truth in repository standards, one check at a time."*

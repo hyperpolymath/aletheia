@@ -9,10 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **JSON output format**: `--format json` for CI/CD integration
+- **Quiet mode**: `-q` / `--quiet` - outputs only PASS/FAIL
+- **Verbose mode**: `-v` / `--verbose` - detailed output with explanations
+- **Distinct exit codes**: 0=success, 1=compliance failed, 2=security warning, 3=invalid path, 4=invalid args
+- **GitHub Actions workflow**: `.github/workflows/aletheia.yml` template for GitHub users
+- **Performance benchmarks**: `cargo run --release --bin verification_benchmark`
+- **Help text**: `--help` with usage, options, exit codes, and examples
+- **Version flag**: `--version` displays version information
 - **Security warning system**: Three-level warning system (Info, Warning, Critical)
 - **Symlink detection**: Detects symlinks and warns if they escape repository bounds
 - **Verification timestamps**: ISO 8601 UTC timestamp in output (TOCTOU mitigation)
 - **README.adoc support**: Accepts AsciiDoc README as alternative to Markdown
+- **18 integration tests**: Comprehensive test coverage for all CLI features
 - **ROADMAP.md**: Comprehensive roadmap from MVP to v10.0.0
 - **PRIORITIES.md**: MoSCoW prioritization document
 
@@ -22,12 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Critical symlink warnings now cause verification failure
 - Updated SECURITY.md with accurate threat model
 - Updated MAINTAINERS.md with actual maintainer information
+- Codebase expanded from ~300 lines to ~810 lines (still zero dependencies)
 
 ### Security
 
 - **Security Audit**: Conducted 2025-12-26, zero vulnerabilities found
 - Removed false "large files" limitation from SECURITY.md (we don't read file contents)
 - Added symlink escape detection to prevent directory traversal
+- Exit code 2 reserved for security warnings
 
 ### Fixed
 

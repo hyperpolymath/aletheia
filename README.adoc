@@ -1,131 +1,121 @@
-= Aletheia 🔍
+= Aletheia
+
+image::https://img.shields.io/badge/RSR-Bronze-cd7f32[Rhodium Standard Bronze,link=https://github.com/hyperpolymath/rhodium-standard-repositories]
 
 > *Ἀλήθεια* (alētheia) - Greek: "truth", "disclosure", "unconcealment"
 
-*Aletheia* is a zero-dependency Rust tool for verifying [Rhodium Standard Repository (RSR)](https://gitlab.com/maa-framework) compliance. It helps maintainers ensure their repositories meet the rigorous standards for security, documentation, and operational excellence.
+*Aletheia* is a zero-dependency repository health checker that verifies your project has essential documentation, security disclosure, and build configuration in place.
 
-== 🎯 Purpose
+== What It Checks
 
-Aletheia verifies that repositories conform to RSR standards across multiple dimensions:
+Aletheia scans your repository for:
 
-- *Documentation Completeness*: README, LICENSE, SECURITY.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, MAINTAINERS.md, CHANGELOG.md
-- *Security Disclosure*: `.well-known/security.txt` (RFC 9116), `.well-known/ai.txt`, `.well-known/humans.txt`
-- *Build System*: justfile, flake.nix, CI/CD configuration
-- *Source Structure*: Proper organization of source code and tests
+*Documentation*::
+README, LICENSE, SECURITY.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, MAINTAINERS.md, CHANGELOG.md
 
-== 🚀 Quick Start
+*Security Disclosure*::
+`.well-known/security.txt` (RFC 9116), `.well-known/ai.txt`, `.well-known/humans.txt`
 
-```bash
-= Clone the repository
-git clone https://gitlab.com/maa-framework/6-the-foundation/aletheia.git
-cd aletheia
+*Build System*::
+justfile, flake.nix, CI/CD configuration (.gitlab-ci.yml)
 
-= Build the tool
+*Project Structure*::
+`src/` directory, `tests/` directory
+
+== Quick Start
+
+[source,bash]
+----
+# Build
 cargo build --release
 
-= Run verification on the current directory
+# Check current directory
 cargo run
 
-= Run verification on a specific repository
+# Check a specific repository
 cargo run -- /path/to/repository
 
-= Run tests
-cargo test
-```
+# JSON output for CI/CD pipelines
+cargo run -- --format json
 
-== 📊 RSR Compliance Status
+# Quiet mode (just PASS/FAIL)
+cargo run -- --quiet
+----
 
-*Aletheia itself is RSR Bronze-level compliant:*
+== CLI Usage
 
-- ✅ *Type Safety*: Rust compile-time guarantees, zero unsafe blocks
-- ✅ *Memory Safety*: Rust ownership model, no manual memory management
-- ✅ *Zero Dependencies*: Only uses Rust standard library
-- ✅ *Offline-First*: No network calls, works completely air-gapped
-- ✅ *100% Test Coverage*: Comprehensive unit tests
-- ✅ *Complete Documentation*: All required docs present
-- ✅ *Security-First*: RFC 9116 security.txt, vulnerability disclosure policy
-- ✅ *Build System*: justfile for common operations, Nix for reproducibility
-- ✅ *CI/CD*: Automated testing and verification
+[source]
+----
+aletheia [OPTIONS] [PATH]
 
-== 🏗️ Architecture
+OPTIONS:
+    -h, --help           Print help information
+    -V, --version        Print version information
+    -q, --quiet          Quiet mode (only outputs PASS or FAIL)
+    -v, --verbose        Verbose mode (detailed output)
+    --format <FORMAT>    Output format: human (default), json
 
-Aletheia follows a simple, auditable architecture:
+EXIT CODES:
+    0    All checks passed
+    1    Compliance checks failed
+    2    Security warning (critical)
+    3    Invalid path provided
+    4    Invalid arguments
+----
 
-```
-aletheia/
-├── src/
-│   └── main.rs          # Single-file implementation (~300 lines)
-├── tests/               # Integration tests
-├── .well-known/         # Security and metadata
-├── Cargo.toml           # Zero dependencies
-├── justfile             # Build automation
-├── flake.nix            # Reproducible builds
-└── .gitlab-ci.yml       # CI/CD pipeline
-```
+== Example Output
 
-=== Design Principles
+[source]
+----
+Aletheia - Repository Health Check
+Verified: 2025-12-26T08:00:00Z
+Repository: /path/to/project
 
-1. *Simplicity*: Single-file implementation, easy to audit
-2. *Zero Trust*: No network dependencies, no external crates
-3. *Type Safety*: Leverage Rust's type system for correctness
-4. *Offline-First*: Works completely air-gapped
-5. *Self-Verifying*: Aletheia can verify itself
+Documentation
+  ✅ README.md [Bronze]
+  ✅ LICENSE.txt [Bronze]
+  ✅ SECURITY.md [Bronze]
+  ...
 
-== 🔒 Security
+Score: 16/16 checks passed (100.0%)
+🏆 Bronze-level compliance: ACHIEVED
+----
 
-Aletheia is designed with security as a primary concern:
+== Design Principles
 
-- *No unsafe code*: Zero `unsafe` blocks in the entire codebase
-- *No dependencies*: Eliminates supply chain attack surface
-- *No network access*: Cannot exfiltrate data or download malicious code
-- *Minimal attack surface*: ~300 lines of auditable Rust code
-- *Security disclosure*: See [SECURITY.md](SECURITY.md) and [.well-known/security.txt](.well-known/security.txt)
+1. *Zero Dependencies* - Only uses Rust standard library (no supply chain risk)
+2. *Zero Unsafe Code* - 100% safe Rust
+3. *Offline-First* - No network access, works air-gapped
+4. *Single Binary* - Easy to distribute and audit (~810 lines)
+5. *Self-Verifying* - Aletheia passes its own checks
 
-== 🤝 Contributing
+== Security
 
-We welcome contributions! Please see:
+- *No unsafe code* - Zero `unsafe` blocks
+- *No dependencies* - Eliminates supply chain attack surface
+- *No network access* - Cannot exfiltrate data
+- *Symlink detection* - Prevents directory traversal attacks
+- *Security audit*: 2025-12-26, zero vulnerabilities found
 
-- [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute
-- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) - Community standards
-- [MAINTAINERS.md](MAINTAINERS.md) - Project maintainers
+See link:SECURITY.md[SECURITY.md] for vulnerability disclosure.
 
-== 📜 License
+== Contributing
 
-Dual-licensed under:
+- link:CONTRIBUTING.md[CONTRIBUTING.md] - How to contribute
+- link:CODE_OF_CONDUCT.md[CODE_OF_CONDUCT.md] - Community standards
+- link:MAINTAINERS.md[MAINTAINERS.md] - Project maintainers
 
-- *MIT License* - See [LICENSE-MIT.txt](LICENSE-MIT.txt)
-- *Palimpsest License v0.8* - See [LICENSE-PALIMPSEST.txt](LICENSE-PALIMPSEST.txt)
+== License
 
-You may choose either license.
+Dual-licensed under MIT and Palimpsest v0.8. See link:LICENSE.txt[LICENSE.txt].
 
-== 🌐 TPCF Perimeter
+== Links
 
-*Perimeter 3 (Community Sandbox)* - Fully open contribution
-
-Aletheia operates under the Tri-Perimeter Contribution Framework (TPCF):
-- Anyone can contribute
-- All contributions reviewed for RSR compliance
-- Maintainers ensure quality and security standards
-
-== 📈 Roadmap
-
-- [x] Bronze-level RSR compliance
-- [ ] Silver-level compliance (formal verification)
-- [ ] Gold-level compliance (multi-language support)
-- [ ] Platinum-level compliance (CADRE integration)
-
-== 🙏 Acknowledgments
-
-- Built with [Rust](https://www.rust-lang.org/)
-- Part of the [MAA Framework](https://gitlab.com/maa-framework)
-- Inspired by the pursuit of *aletheia* - uncovering truth through rigorous standards
-
-== 📞 Contact
-
-- *Issues*: [GitLab Issues](https://gitlab.com/maa-framework/6-the-foundation/aletheia/-/issues)
-- *Security*: See [SECURITY.md](SECURITY.md)
-- *Email*: See [.well-known/security.txt](.well-known/security.txt)
+- https://gitlab.com/maa-framework/6-the-foundation/aletheia[Repository]
+- link:ROADMAP.md[Roadmap]
+- link:CHANGELOG.md[Changelog]
+- link:RSR-CONFORMITY.md[RSR Conformity Statement]
 
 ---
 
-*"The truth is not always beautiful, nor beautiful words the truth." - Lao Tzu*
+_"The truth is not always beautiful, nor beautiful words the truth." - Lao Tzu_

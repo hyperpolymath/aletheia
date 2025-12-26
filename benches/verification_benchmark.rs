@@ -9,7 +9,83 @@
 //! (but that would add a dependency, breaking RSR Bronze compliance).
 
 use std::path::PathBuf;
-use std::time::Instant;
+use std::process::Command;
+use std::time::{Duration, Instant};
+
+/// Number of iterations for each benchmark
+const ITERATIONS: u32 = 100;
+
+/// Number of warmup iterations
+const WARMUP: u32 = 5;
+
+/// Benchmark a function and return statistics
+struct BenchmarkResult {
+    name: String,
+    min: Duration,
+    max: Duration,
+    avg: Duration,
+    iterations: u32,
+}
+
+impl BenchmarkResult {
+    fn print(&self) {
+        println!(
+            "{}: min={}μs, max={}μs, avg={}μs ({} iterations)",
+            self.name,
+            self.min.as_micros(),
+            self.max.as_micros(),
+            self.avg.as_micros(),
+            self.iterations
+        );
+    }
+}
+
+/// Run a benchmark with warmup and statistics
+fn benchmark<F: FnMut()>(name: &str, mut f: F) -> BenchmarkResult {
+    // Warmup phase
+    for _ in 0..WARMUP {
+        f();
+    }
+
+    let mut times = Vec::with_capacity(ITERATIONS as usize);
+
+    // Measurement phase
+    for _ in 0..ITERATIONS {
+        let start = Instant::now();
+        f();
+        times.push(start.elapsed());
+    }
+
+    let min = *times.iter().min().unwrap();
+    let max = *times.iter().max().unwrap();
+    let total: Duration = times.iter().sum();
+    let avg = total / ITERATIONS;
+
+    BenchmarkResult {
+        name: name.to_string(),
+        min,
+        max,
+        avg,
+        iterations: ITERATIONS,
+    }
+}
+
+/// Run a benchmark for command execution (fewer iterations)
+fn benchmark_command(name: &str, binary_path: &str, args: &[&str]) -> BenchmarkResult {
+    const CMD_ITERATIONS: u32 = 10;
+
+    // Warmup
+    for _ in 0..2 {
+        let _ = Command::new(binary_path).args(args).output();
+    }
+
+    let mut times = Vec::with_capacity(CMD_ITERATIONS as usize);
+
+    for _ in 0..CMD_ITERATIONS {
+        let start = Instant::now();
+        let _ = Command::new(binary_path).args(args).output();
+        times.push(start.elapsed());
+    }
 
     let min = *times.iter().min().unwrap();
     let max = *times.iter().max().unwrap();
@@ -93,12 +169,11 @@ fn main() {
     });
     multi_file.print();
 
-    // Benchmark 4: Complete verification (x10)
-    let total_time = benchmark("Complete verification (x10)", || {
-        use std::process::Command;
-        for _ in 0..10 {
-            let _ = Command::new("cargo").args(&["run", "--release"]).output();
-        }
+    // Benchmark 4: Directory checks
+    let dir_checks = benchmark("Directory existence checks", || {
+        let _ = current_dir.join("src").is_dir();
+        let _ = current_dir.join("tests").is_dir();
+        let _ = current_dir.join(".well-known").is_dir();
     });
     dir_checks.print();
 

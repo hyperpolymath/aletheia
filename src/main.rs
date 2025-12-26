@@ -15,6 +15,40 @@ use std::path::{Path, PathBuf};
 use std::process;
 use std::time::SystemTime;
 
+/// Version information
+const VERSION: &str = env!("CARGO_PKG_VERSION");
+
+/// Exit codes for different failure modes
+mod exit_codes {
+    pub const SUCCESS: i32 = 0;
+    pub const COMPLIANCE_FAILED: i32 = 1;
+    pub const SECURITY_WARNING: i32 = 2;
+    pub const INVALID_PATH: i32 = 3;
+    pub const INVALID_ARGS: i32 = 4;
+}
+
+/// Output format options
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum OutputFormat {
+    Human,
+    Json,
+}
+
+/// Verbosity level
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+enum Verbosity {
+    Quiet,   // Only pass/fail
+    Normal,  // Standard output
+    Verbose, // Include all details
+}
+
+/// CLI options
+struct CliOptions {
+    repo_path: PathBuf,
+    format: OutputFormat,
+    verbosity: Verbosity,
+}
+
 /// RSR Compliance levels
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[allow(dead_code)] // Silver, Gold, Platinum reserved for future compliance levels
@@ -256,12 +290,16 @@ fn check_dir(base: &Path, dirname: &str, report: &mut ComplianceReport) -> bool 
 /// Verify documentation files exist
 fn check_documentation(report: &mut ComplianceReport, repo_path: &Path) {
     // README can be either .md or .adoc (AsciiDoc is acceptable alternative)
-    let readme_exists =
-        file_exists(repo_path, "README.md") || file_exists(repo_path, "README.adoc");
+    let readme_md = check_file(repo_path, "README.md", report);
+    let readme_adoc = if !readme_md {
+        check_file(repo_path, "README.adoc", report)
+    } else {
+        false
+    };
     report.add_check(
         "Documentation",
         "README.md",
-        readme_exists,
+        readme_md || readme_adoc,
         ComplianceLevel::Bronze,
     );
 
@@ -275,15 +313,14 @@ fn check_documentation(report: &mut ComplianceReport, repo_path: &Path) {
     ];
 
     for doc in other_required_docs {
-        let exists = file_exists(repo_path, doc);
+        let exists = check_file(repo_path, doc, report);
         report.add_check("Documentation", doc, exists, ComplianceLevel::Bronze);
     }
 }
 
 /// Verify .well-known directory and required files
 fn check_well_known(report: &mut ComplianceReport, repo_path: &Path) {
-    let well_known_path = repo_path.join(".well-known");
-    let has_dir = well_known_path.is_dir();
+    let has_dir = check_dir(repo_path, ".well-known", report);
 
     report.add_check(
         "Well-Known",
@@ -294,9 +331,14 @@ fn check_well_known(report: &mut ComplianceReport, repo_path: &Path) {
 
     // Always emit file checks for consistent check count (16 total)
     // Files can only pass if directory exists
+    let well_known_path = repo_path.join(".well-known");
     let required_files = vec!["security.txt", "ai.txt", "humans.txt"];
     for file in required_files {
-        let exists = has_dir && well_known_path.join(file).is_file();
+        let exists = if has_dir {
+            check_file(&well_known_path, file, report)
+        } else {
+            false
+        };
         report.add_check("Well-Known", file, exists, ComplianceLevel::Bronze);
     }
 }
@@ -588,7 +630,7 @@ fn json_escape(s: &str) -> String {
     }
     result
 }
-
+Aletheia is a zero-dependency Rust tool for verifying [Rhodium Standard Repository (RSR)](https://gitlab.com/maa-framework) compliance. It helps maintainers ensure their repositories meet the rigorous standards for security, documentation, and operational excellence.
 /// Print report as JSON
 fn print_json_report(report: &ComplianceReport) {
     let timestamp = format_timestamp(report.verified_at);
@@ -768,9 +810,14 @@ fn main() {
 
     let report = verify_repository(&options.repo_path);
 
-    // Exit with status code based on Bronze compliance and critical warnings
-    if !report.bronze_compliance() || report.has_critical_warnings() {
-        process::exit(1);
+    // Output based on format and verbosity
+    match options.format {
+        OutputFormat::Json => print_json_report(&report),
+        OutputFormat::Human => match options.verbosity {
+            Verbosity::Quiet => print_quiet_report(&report),
+            Verbosity::Normal => print_report(&report),
+            Verbosity::Verbose => print_verbose_report(&report),
+        },
     }
 
     // Exit with appropriate code

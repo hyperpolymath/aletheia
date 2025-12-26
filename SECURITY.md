@@ -117,11 +117,10 @@ We welcome security audits! If you're interested in auditing Aletheia:
 
 ### Known Limitations
 
-1. **Symbolic Links**: Aletheia follows symbolic links, which could lead to traversal outside intended directories
-2. **Large Files**: Reading very large files could consume significant memory
-3. **Filesystem Races**: TOCTOU (time-of-check-time-of-use) gaps between existence checks and file reads
+1. **Symbolic Links**: Aletheia detects symlinks and warns if they point outside the repository. Symlinks pointing outside the repository root generate CRITICAL warnings and cause verification to fail.
+2. **Filesystem Races**: TOCTOU (time-of-check-time-of-use) gaps between existence checks and file reads. Mitigated by including verification timestamp in output.
 
-These are not considered security vulnerabilities in the current threat model but are documented for transparency.
+These are documented for transparency. Aletheia does NOT read file contents - it only checks existence - so there is no memory exhaustion risk from large files.
 
 ## 🎯 Threat Model
 

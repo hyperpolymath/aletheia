@@ -7,16 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned
+### Added
 
-- Silver-level RSR compliance checks
-- Gold-level RSR compliance checks
-- Platinum-level RSR compliance checks
-- JSON output format for CI/CD integration
-- Configurable check severity levels
-- Custom check definitions via TOML configuration
-- Batch repository analysis
-- HTML report generation
+- **Security warning system**: Three-level warning system (Info, Warning, Critical)
+- **Symlink detection**: Detects symlinks and warns if they escape repository bounds
+- **Verification timestamps**: ISO 8601 UTC timestamp in output (TOCTOU mitigation)
+- **README.adoc support**: Accepts AsciiDoc README as alternative to Markdown
+- **ROADMAP.md**: Comprehensive roadmap from MVP to v10.0.0
+- **PRIORITIES.md**: MoSCoW prioritization document
+
+### Changed
+
+- Consistent 16-check count regardless of .well-known directory existence
+- Critical symlink warnings now cause verification failure
+- Updated SECURITY.md with accurate threat model
+- Updated MAINTAINERS.md with actual maintainer information
+
+### Security
+
+- **Security Audit**: Conducted 2025-12-26, zero vulnerabilities found
+- Removed false "large files" limitation from SECURITY.md (we don't read file contents)
+- Added symlink escape detection to prevent directory traversal
+
+### Fixed
+
+- Self-verification now passes (was 76.9%, now 100%)
+- Integration tests updated to match actual check count
+- Removed unused code warnings
 
 ## [0.1.0] - 2025-11-22
 

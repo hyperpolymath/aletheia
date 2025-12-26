@@ -9,6 +9,7 @@ repository = "https://gitlab.com/maa-framework/6-the-foundation/aletheia"
 keywords = ["verification", "compliance", "rsr", "security", "standards"]
 categories = ["development-tools", "command-line-utilities"]
 rust-version = "1.75"
+default-run = "aletheia"
 
 [dependencies]
 # Zero dependencies for Bronze-level RSR compliance
@@ -20,6 +21,10 @@ rust-version = "1.75"
 [[bin]]
 name = "aletheia"
 path = "src/main.rs"
+
+[[bin]]
+name = "verification_benchmark"
+path = "benches/verification_benchmark.rs"
 
 [profile.release]
 opt-level = 3

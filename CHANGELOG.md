@@ -98,9 +98,9 @@ aletheia/
 ### Known Limitations
 
 - **Bronze-level only**: Only checks Bronze-level compliance (Silver/Gold/Platinum planned)
-- **No JSON output**: Only human-readable output (JSON format planned)
 - **No custom checks**: Cannot define custom verification rules (planned)
 - **Single repository**: Cannot batch-analyze multiple repositories (planned)
+- **No configuration file**: Settings must be passed as CLI arguments (planned)
 
 ## Version History
 

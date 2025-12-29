@@ -2,7 +2,7 @@
 # Produces a minimal, secure container image
 
 # Stage 1: Build
-FROM rust:1.75-alpine AS builder
+FROM rust:1.85-alpine AS builder
 
 # Install build dependencies
 RUN apk add --no-cache musl-dev
